@@ -16,14 +16,11 @@ def k_xn_xm(xn, xm):
 label = [-1., -1., -1., 1., 1., 1., 1.]
 training_data = np.array([[1.,0.],[0.,1.],[0.,-1.],[-1.,0.],[0.,2.],[0.,-2.],[-2.,0.]])
 
-k_xn_xm(training_data[0], training_data[1])
-
 Q = []
-for n, phi_n in enumerate(training_data):
+for n, x_n in enumerate(training_data):
     qn = []
-    for m, phi_m in enumerate(training_data):
-        qnm = label[n]*label[m]*k_xn_xm(phi_n, phi_m)
-        # qnm = k_xn_xm(phi_n, phi_m)
+    for m, x_m in enumerate(training_data):
+        qnm = label[n]*label[m]*k_xn_xm(x_n, x_m)
         qn.append(qnm)
     #print(qn)
     Q.append(qn)
@@ -49,13 +46,10 @@ print("QP solution:", alphas)
 
 def normalize_alpha(a,b):
     if np.abs(a) > b:
-        return np.array(a)
+        return a
     else:
         return 0
 
 na = np.vectorize(normalize_alpha,otypes=[float])
 alphas = list(na(alphas,1e-3))
 print("QP solution after normalized:", alphas)
-
-
-
