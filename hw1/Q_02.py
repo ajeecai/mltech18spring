@@ -43,7 +43,19 @@ G = np.identity(len(label)) * -1.
 
 print(sparse_solvers,available_solvers)
 
- # choose osqp, make sure it is in slot 0. Could qpsolver use dictionary instead of list for this?
-print("QP solution:", solve_qp(Q, p, G, h, A, b, solver=sparse_solvers[0]))
+# choose osqp solver
+alphas = solve_qp(Q, p, G, h, A, b, solver='osqp')
+print("QP solution:", alphas)
+
+def normalize_alpha(a,b):
+    if np.abs(a) > b:
+        return np.array(a)
+    else:
+        return 0
+
+na = np.vectorize(normalize_alpha,otypes=[float])
+alphas = list(na(alphas,1e-3))
+print("QP solution after normalized:", alphas)
+
 
 
