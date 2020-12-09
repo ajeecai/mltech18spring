@@ -51,5 +51,11 @@ def normalize_alpha(a,b):
         return 0
 
 na = np.vectorize(normalize_alpha,otypes=[float])
-alphas = list(na(alphas,1e-3))
+alphas = na(alphas,1e-3)
 print("QP solution after normalized:", alphas)
+
+# print("label*alphas = \n",np.mat(label * alphas),", k_xn_xm = ", np.mat(k_xn_xm(training_data,training_data[1])))
+b = label[1] - np.mat(alphas*label)*np.mat(k_xn_xm(training_data,training_data[1])).transpose()
+print("b is ",b)
+
+#g(x) = np.mat(alphas*label)*np.mat(k_xn_xm(x,training_data[1])).transpose() + b
